@@ -52,8 +52,6 @@ var date = new Date();
 var now = Date.now();
 var m_now = moment(now).format("YYYY/MM/DD");
 
-logger("info", "dsadsa");
-
 
 /*
 @action -> String -> "error", "warning" or "info" are permitted
