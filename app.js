@@ -10,6 +10,8 @@ Software: A simples nodejs logger for APIs
 module.exports = logger;
 
 var promise = require('bluebird');
+var moment = require('moment');
+var path = require('path');
 
 // Colors def
 const Reset = "\x1b[0m"
@@ -46,16 +48,20 @@ var error = {
 
 var color = null;
 var app = null;
+var date = new Date();
+var now = Date.now();
+var m_now = moment(now).format("YYYY/MM/DD");
+
+logger("info", "dsadsa");
 
 
 /*
 @action -> String -> "error", "warning" or "info" are permitted
-@application -> String -> Any string that describes the name and/or/module of your application
 @message -> String -> Any string describing the log
 @return -> Promise -> Returns a promise with a customized console.log function
 */
 
-function logger($action, $application, $message) {
+function logger($action, $message) {
 
     return promise.try(promiseCheckValid)
         .then(promiseCheckAction)
@@ -64,7 +70,7 @@ function logger($action, $application, $message) {
         .catch(promiseError);
 
     function promiseCheckValid() {
-        if (typeof $action !== "string" || typeof $application !== "string" || typeof $message !== "string") {
+        if (typeof $action !== "string" || typeof $message !== "string") {
             throw error.typeError;
         }
         else return;
@@ -98,16 +104,16 @@ function logger($action, $application, $message) {
     function promiseMakeApp(result) {
         if (result !== undefined && result !== null) {
             if (result) {
-                var app = "[SERVER]: At ".concat($application);
+                var f_path = path.basename(__filename);
+                var app = `[SERVER:${m_now}]:` + " At ".concat(f_path) + " --> ";
                 return app;
             }
         }
     }
 
     function promiseExecute(result) {
-        $application = result;
-        if ($application !== undefined && $application !== null) {
-            console.log(color, $application + " " + $message);
+        if (result !== undefined && result !== null) {
+            console.log(color, result + " " + $message);
         }
     }
 
