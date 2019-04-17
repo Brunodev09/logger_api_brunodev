@@ -1,4 +1,4 @@
 const logger = require("./logger");
 
 
-logger.log("piru");
+logger.log("message");
